@@ -19,6 +19,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 const secretKey = 'jfdsm_zxncjk#%jfds1234<,>dhfdkmn%a@fdf!';
 app.post('/logindata', async (req, res) => {
+    console.log('loginForm')
     try {
         const { username, password } = req.body;
         if (!username || !password) {
@@ -42,9 +43,12 @@ app.post('/logindata', async (req, res) => {
         return res.json({ message: "unSuccess", data: error })
     }
 })
-app.get('/', async (req, res) => {
+app.get('/home', async (req, res) => {
+    res.set('Cache-Control', 'no-cache');
+    console.log('i am in home')
     try {
         const response1 = await csvdata.find();
+        console.log(response1)
         return res.json({ message: "success", data: response1 })
     } catch (err) {
         return res.json({ message: "unSuccess", data: err })
@@ -55,6 +59,7 @@ app.get('/', async (req, res) => {
 
 // Handle POST request for file upload
 app.post('/uploadfile', upload.single('file'), async (req, res) => {
+    console.log('uploadFile')
     const uploadedFile = req.file;
     if (!uploadedFile) {
         return res.status(400).send('No file uploaded');
